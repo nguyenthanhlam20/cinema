@@ -1,0 +1,36 @@
+﻿@using Cinema.Helpers;
+@using Cinema.Enums;
+@using Cinema.Models;
+
+@{
+
+    string currentUrl = Context.Request.Path + Context.Request.QueryString;
+
+    if (currentUrl.Contains("SignIn"))
+    {
+        Layout = "~/Views/Shared/Layouts/_BlankLayout.cshtml";
+    }
+    else
+    {
+
+        UserInfo userInfo = SessionHelper.GetObject<UserInfo>(Context.Session, "UserInfo");
+
+        if (userInfo?.Role != null)
+        {
+            Role role = (Role)userInfo.RoleNumber;
+            switch (role)
+            {
+                case Role.Admin:
+                    Layout = "~/Views/Shared/Layouts/_AdminLayout.cshtml";
+                    break;
+                default:
+                    Layout = "~/Views/Shared/Layouts/_UserLayout.cshtml";
+                    break;
+            }
+        }
+        else
+        {
+            Layout = "~/Views/Shared/Layouts/_Layout.cshtml";
+        }
+    }
+}
