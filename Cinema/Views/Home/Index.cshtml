@@ -1,10 +1,10 @@
-﻿<div class="hero_area">
+﻿@using Cinema.Models;
+@model List<Film>
+
+<div class="hero_area mb-3">
     <div class="bg-box">
-        <img src="view/images/cinema.jpg" alt="">
+        <img src="~/assets/images/cinema.jpg" alt="">
     </div>
-    <!-- header section strats -->
-    <!-- end header section -->
-    <!-- slider section -->
     <section class="slider_section ">
         <div id="customCarousel1" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
@@ -86,25 +86,27 @@
         <!-- List Products -->
         <div class="filters-content">
             <div class="row grid">
-            @*     <c:forEach items="${requestScope.film}" var="f">
+
+                @foreach (var item in Model)
+                {
                     <div class="col-sm-6 col-lg-4 all pizza">
                         <div class="box">
                             <div>
                                 <div class="img-box">
-                                    <img src="view/images/${f.image}" alt="">
+                                    <img src=@item.Img alt="">
                                 </div>
                                 <div class="detail-box">
                                     <h5>
-                                        ${f.title}
+                                        @item.Title
                                     </h5>
                                     <p>
-                                        ${f.description}
+                                        @item.Description
                                     </p>
                                     <div class="options">
                                         <h6>
-                                            Time: ${f.time} minute
+                                            Time: @item.Time minute
                                         </h6>
-                                        <a href="film?film=${f.filmId}" class="" style="color: black; text-decoration: none">
+                                        <a asp-controller="Film" asp-action="Details" asp-route-filmId="@item.FilmId" class="" style="color: black; text-decoration: none">
                                             <i class="icon fa fa-solid fa-eye"></i>
                                         </a>
                                     </div>
@@ -112,11 +114,11 @@
                             </div>
                         </div>
                     </div>
-                </c:forEach> *@
+                }
             </div>
         </div>
         <div class="btn-box">
-            <a href="menu">
+            <a asp-controller="Menu" asp-action="Index">
                 View More
             </a>
         </div>

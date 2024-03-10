@@ -1,6 +1,9 @@
-﻿namespace Cinema.Services.Genres
+﻿using Cinema.Models;
+
+namespace Cinema.Services.Genres
 {
-    public class IGenreService
+    public interface IGenreService
     {
+        Task<List<Genre>> GetAll();
     }
 }

@@ -1,6 +1,9 @@
-﻿namespace Cinema.Services.Seats
+﻿using Cinema.Models;
+
+namespace Cinema.Services.Seats
 {
-    public class ISeatService
+    public interface ISeatService
     {
+        Task<List<Seat>> GetBookedSeatsByShowId(int showId);
     }
 }

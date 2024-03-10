@@ -1,6 +1,11 @@
-﻿namespace Cinema.Services.Bookings
+﻿using Cinema.Responses;
+
+namespace Cinema.Services.Bookings
 {
-    public class IBookingService
+    public interface IBookingService
     {
+        Task<bool> BookingSeats(int showId, int userId, string[] seats);
+        Task<BookingHistory> GetBookingHistory(int userId);
+
     }
 }

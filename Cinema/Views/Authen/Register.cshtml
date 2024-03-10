@@ -1,5 +1,100 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using Cinema.Requests
+@model RegisterRequest
+
+<section class="h-100 container px-5 register">
+    <div class="py-5 h-100 ">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+                <div class="card card-registration  ">
+                    <div class="row">
+                        <div class="col-xl-6 d-none d-xl-block">
+                            <img src="https://www.pressprintparty.com/wp-content/uploads/2021/08/movie-night-halloween-1.jpg"
+                                 alt="Sample photo" class="img-fluid"
+                                 height="500"
+                                 style="border-radius: 5px 0px 0px 0px; overflow: hidden;" />
+                        </div>
+                        <div class="col-xl-6 m-0 p-3 text-start d-flex flex-row justify-content-start">
+                            <form asp-controller="Authen" asp-action="Register" method="post">
+                                <div class="card-body p-md-1 text-black">
+                                    <h2 class="mb-5 text-uppercase">registration form</h2>
+
+                                    <div class="form-outline mb-3">
+                                        <label class="fw-bold" for="form3Example8">Full Name</label>
+                                        <input asp-for="Fullname" type="text" id="form3Example8" class="form-control "
+                                               required="true" placeholder="Fullname" name="Fullname" />
+                                    </div>
+
+                                    <div class="form-outline mb-3">
+                                        <label class="fw-bold" for="form3Example8">Email</label>
+                                        <input asp-for="Email" type="text" id="form3Example8" class="form-control "
+                                               required placeholder="Email" name="Email" />
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-outline">
+                                                <label class="fw-bold" for="form3Example1m1">Password</label>
+                                                <input asp-for="Password" type="password" id="form3Example1m1 " required placeholder="Password"
+                                                       class="form-control " name="Password" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-outline">
+                                                <label class="fw-bold" for="form3Example1n1">Confirm Password</label>
+                                                <input asp-for="ConfirmPassword" type="password" id="form3Example1n1" required placeholder="Confirm Password"
+                                                       class="form-control " name="ConfirmPassword" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-outline mb-3">
+                                        <label class="fw-bold" for="form3Example90">Phone</label>
+                                        <input asp-for="Phone" type="text" id="form3Example90" class="form-control "
+                                               required placeholder="Phone" name="Phone" />
+                                    </div>
+
+                                    <div class="form-outline mb-3">
+                                        <label class="fw-bold" for="form3Example8">Address</label>
+                                        <input asp-for="Address" type="text" id="form3Example8" class="form-control "
+                                               required placeholder="Address" name="Address" />
+                                    </div>
+
+                                    <div class="d-md-flex justify-content-start align-items-center mb-3 py-2">
+
+                                        <h6 class="mb-0 me-4 fw-bold">Gender: </h6>
+
+                                        <div class="form-check form-check-inline mb-0 me-4 ">
+                                            <input asp-for="Gender" class="form-check-input m-sm-1" type="radio"
+                                                   id="femaleGender" value="false" name="gender" />
+                                            <label class="form-check-label" for="femaleGender">Female</label>
+                                        </div>
+
+                                        <div class="form-check form-check-inline mb-0 me-4">
+                                            <input asp-for="Gender" class="form-check-input m-sm-1" type="radio"
+                                                   id="maleGender" value="true" name="gender" />
+                                            <label class="form-check-label" for="maleGender">Male</label>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-outline mb-3">
+                                        <label class="fw-bold" for="form3Example9" required>DOB</label>
+                                        <input asp-for="Dob" type="date" id="form3Example9"
+                                               class="form-control " name="Dob" />
+                                    </div>
+                                    <div class="pt-1 mb-4">
+                                        <button class="btn btn-dark btn-block" type="submit">Submit</button>
+                                    </div>
+
+                                    <p class="mt-2 text-center" style="color: #393f81;">
+                                        Do you already have an account ? <a asp-controller="Authen" asp-action="Login" style="color: #393f81;">Login here</a>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

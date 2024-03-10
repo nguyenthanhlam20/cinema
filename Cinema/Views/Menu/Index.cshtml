@@ -1,0 +1,65 @@
+﻿@using Cinema.Models;
+@using Cinema.Requests;
+@model FilmPagingRequest
+
+@{
+    var genres = ViewData["Genres"] as List<Genre>;
+}
+
+<section class="food_section layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>
+                Menu film
+            </h2>
+        </div>
+        <ul class="filters_menu">
+            @if (genres != null)
+            {
+                @foreach (var item in genres)
+                {
+                    <li class=@(item.GenreId == Model.GenreId ? "active" : "")>
+                        <a style="text-decoration: none" asp-controller="Menu" asp-action="Index" asp-route-GenreId="@item.GenreId">@item.Name</a>
+                    </li>
+                }
+            }
+        </ul>
+
+        <div class="filters-content">
+            <div class="row grid">
+                @if (Model.Items != null && Model.Items.Count > 0)
+                {
+                    @foreach (var item in Model.Items)
+                    {
+                        <div class="col-sm-6 col-lg-4 all pizza">
+                            <div class="box">
+                                <div>
+                                    <div class="img-box">
+                                        <img src=@item.Img alt="">
+                                    </div>
+                                    <div class="detail-box">
+                                        <h5>
+                                            @item.Title
+                                        </h5>
+                                        <p>
+                                            @item.Description
+                                        </p>
+                                        <div class="options">
+                                            <h6>
+                                                Time: @item.Time minute
+                                            </h6>
+                                            <a asp-controller="Film" asp-action="Details" asp-route-filmId="@item.FilmId" class="" style="color: black; text-decoration: none">
+                                                <i class="icon fa fa-solid fa-eye"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+</section>

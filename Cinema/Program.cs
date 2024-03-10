@@ -1,5 +1,15 @@
 
 using Cinema.Models;
+using Cinema.Services.Authens;
+using Cinema.Services.Bookings;
+using Cinema.Services.Countries;
+using Cinema.Services.Films;
+using Cinema.Services.Genres;
+using Cinema.Services.Rooms;
+using Cinema.Services.Seats;
+using Cinema.Services.Shows;
+using Cinema.Services.Slots;
+using Cinema.Services.Users;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +17,6 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDistributedMemoryCache(); // Use a distributed cache for session data
-
 
 //Regist DbContext Service
 builder.Services.AddDbContext<CinemaContext>(options =>
@@ -36,13 +45,20 @@ builder.Services.AddAuthentication((options =>
 
 builder.Services.AddHttpContextAccessor();
 
-//builder.Services.AddScoped<PublicPageFilter>();
-
 // Transient
+builder.Services.AddTransient<IAuthenService, AuthenService>();
+builder.Services.AddTransient<IBookingService, BookingService>();
+builder.Services.AddTransient<ICountryService, CountryService>();
+builder.Services.AddTransient<IFilmService, FilmService>();
+builder.Services.AddTransient<IGenreService, GenreService>();
+builder.Services.AddTransient<IRoomService, RoomService>();
+builder.Services.AddTransient<ISeatService, SeatService>();
+builder.Services.AddTransient<IShowService, ShowService>();
+builder.Services.AddTransient<ISlotService, SlotService>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddMemoryCache();
 builder.Services.AddHttpClient();
-
 
 var app = builder.Build();
 

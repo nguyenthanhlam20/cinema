@@ -1,6 +1,9 @@
-﻿namespace Cinema.Services.Countries
+﻿using Cinema.Models;
+
+namespace Cinema.Services.Countries
 {
-    public class ICountryService
+    public interface ICountryService
     {
+        Task<List<Country>> GetAll();
     }
 }

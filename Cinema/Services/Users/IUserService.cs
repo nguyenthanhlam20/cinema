@@ -1,6 +1,11 @@
-﻿namespace Cinema.Services.Users
+﻿using Cinema.Models;
+
+namespace Cinema.Services.Users
 {
-    public class IUserService
+    public interface IUserService
     {
+        Task<int> GetTotalUsers();
+        Task<User> GetUserByEmail(string email);
+        Task<bool> UpdateUser(User user);
     }
 }

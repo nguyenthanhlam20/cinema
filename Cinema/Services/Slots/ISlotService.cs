@@ -1,6 +1,9 @@
-﻿namespace Cinema.Services.Slots
+﻿using Cinema.Models;
+
+namespace Cinema.Services.Slots
 {
-    public class ISlotService
+    public interface ISlotService
     {
+        Task<List<Slot>> GetSlots();
     }
 }
