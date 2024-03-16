@@ -6,7 +6,7 @@ namespace Cinema.Requests
     {
         public string Title { get; set; } = string.Empty;
         public string Date {  get; set; } = string.Empty;
-
         public string Order { get; set; } = string.Empty;
+
     }
 }

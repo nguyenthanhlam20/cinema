@@ -1,0 +1,63 @@
+﻿@using Cinema.Models
+@model Film
+
+<section class="container mt-5">
+    <div class="row ">
+        <div class="col-lg-5">
+            <div class="card">
+                <img class="rounded-2"
+                     src="@Model.Img"
+                     style="object-fit: cover; height: 505px;"
+                     id="product-detail">
+            </div>
+        </div>
+        <!-- col end -->
+        <div class="col-lg-7">
+            <div class="card p-3 border-0">
+                <h1 class="h2">@Model.Title</h1>
+                <ul class="list-inline">
+                    <li class="list-inline-item">
+                        <h6>Genres:</h6>
+                    </li>
+                    <li class="list-inline-item">
+                        <p class="text-muted">
+                            <strong>@Model.Genre.Name</strong>
+                        </p>
+                    </li>
+                </ul>
+
+                <h6>Description:</h6>
+                <p>@Model.Description</p>
+                <ul class="list-inline">
+                    <li class="list-inline-item">
+                        <h6>Author :</h6>
+                    </li>
+                    <li class="list-inline-item">
+                        <p class="text-muted"><strong>@Model.Author</strong></p>
+                    </li>
+                </ul>
+
+                <ul class="list-inline d-flex">
+                    <li class="list-inline-item">
+                        <h6>Casts:</h6>
+                    </li>
+                    <li class="list-inline-item">
+                        <p class="text-muted">
+                            <strong>@Model.Actor </strong>
+                        </p>
+                    </li>
+                </ul>
+
+                <h6>Movie duration: @Model.Time minutes</h6>
+                <h6 class="mt-4">Language: @Model.CountryCode</h6>
+                <div class="row pb-3">
+                    <div class="col d-grid">
+                        <a asp-area="User" asp-controller="Seat" asp-action="ChooseShowMovie" asp-route-filmId="@Model.FilmId" class="btn btn-success btn-lg">
+                            Buy Ticket
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

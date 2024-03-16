@@ -1,126 +1,125 @@
-﻿<section class="py-1">
-    <!-- style="background-color: white"-->
-    <div class="container d-flex " style="min-height: 800px;">
-        <div class="col-md-3 border "
-             style="background-color: #eeeee4; margin-right: 20px; border-radius: 30px; ">
-            <div style="margin-top: 300px">
-                <h3 class="text-center mt-5">Filter</h3>
-                <form action="manageShowController" method="get">
-                    <div style="margin-left: 30px">
-                        <input hidden type="text" value="1" name="page">
-                        <div class="mt-3">
-                            <label class="col-md-3">Title: </label>
-                            <input class="col-md-8" type="text" value="${title}" name="title" />
-                        </div>
-                        <div class="mt-1">
-                            <label class="col-md-3">Date: </label>
-                            <input class="col-md-8" type="date" value="${date}" name="date" />
-                        </div>
-                        <div class="mt-1">
-                            <label class="col-md-3">Order: </label>
-                           @*  <select class="col-md-8" name="order">
-                                <option value="title" <c:if test="${order == 'title'}">selected</c:if>>Title</option>
-                                <option value="slotId"<c:if test="${order == 'slotId'}">selected</c:if>>Time</option>
-                                <option value="roomId"<c:if test="${order == 'roomId'}">selected</c:if>>Room</option>
-                                <option value="showDate"<c:if test="${order == 'showDate'}">selected</c:if>>Date</option>
-                            </select> *@
-                        </div>
-                        <div class="mt-1">
-                            <label class="col-md-3">Dimesion: </label>
-                          @*   <select class="col-md-8" name="dimesion">
-                                <option value="asc" <c:if test="${dimesion == 'asc'}">selected</c:if>>Ascending</option>
-                                <option value="desc"<c:if test="${dimesion == 'desc'}">selected</c:if>>Descending</option>
-                            </select> *@
-                        </div>
-                    </div>
-                    <div class="mt-3 d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
+﻿@using Cinema.Requests
+@using Cinema.Models
+@model ShowPagingRequest
+@{
+    int totalRecord = (int)Model.TotalRecord;
+    int totalPages = (int)Model.TotalPages;
+    int currentPage = Model.CurrentPage;
+    int pageSize = Model.PageSize;
 
-        </div>
-        <div class="col-md-9">
-            <h3 class="mt-5">List Show Is Active</h3>
-            <div class="d-flex justify-content-between mt-5 ">
-                <a href="createShowController" class="btn btn-outline-success ">Add more show</a>
+    int startPage = Math.Max(1, currentPage - 2);
+    int endPage = Math.Min(totalPages, currentPage + 2);
+
+    int startIndex = ((currentPage - 1) * pageSize) + 1;
+    int endIndex = startIndex + pageSize - 1;
+    if (endIndex > totalRecord) endIndex = totalRecord;
+
+    int ordinalNumber = 1;
+}
+
+<div class="pagetitle">
+    <h1>List Show</h1>
+</div><!-- End Page Title -->
+
+<div class="card h-100 border-0 p-3">
+
+    <div class="row mb-2">
+        <form id="form-search" method="get" asp-area="Admin" asp-controller="Show" asp-action="Index">
+            <input name="IsSearch" type="hidden" value="true">
+            <div class="row">
+                <div class=" col-sm-12 col-lg-8 pe-lg-0">
+                    <div class="input-group">
+                        <input asp-for="@Model.SearchTerm" name="SearchTerm" type="text" class="form-control rounded-0 rounded-start"
+                               id="search-term"
+                               placeholder="Enter item name">
+                        <button type="submit" class="btn btn-info rounded-0 rounded-end text-white">
+                            <span><i class="bi bi-search"></i> Search</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-lg-4 pt-2 pt-lg-0 text-lg-end">
+                    <a asp-area="Admin" asp-controller="Show" asp-action="Create" class="btn btn-primary">
+                        <span><i class="bi bi-plus-circle-fill me-1"></i>Add new show</span>
+                    </a>
+                </div>
             </div>
-            <table class="table mt-2" style="height: 100px">
+            <input id="current-page" type="hidden" asp-for="CurrentPage" name="CurrentPage" />
+        </form>
+    </div>
+    @if (Model?.Items?.Count > 0)
+    {
+        <div class="table-container">
+            <table class="useful-table">
                 <thead>
                     <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Film Title</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Room</th>
+                        <th>Index</th>
+                        <th scope="col">Show Title</th>
+                        <th scope="col">Theater</th>
                         <th scope="col">Date</th>
-
-                        <th scope="col">Action</th>
+                        <th scope="col">Slot</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <c:forEach items="${requestScope.show}" var="s">
-                        <tr style="height: 60px">
-                            <th scope="row">${s.showId}</th>
-                            <th scope="row">${s.film.title}</th>
-                            <th scope="row">${s.slot.time}</th>
-                            <th scope="row">${s.room.roomName}</th>
-                            <th scope="row">${s.showDate}</th>
-                            <th scope="row">
-                                <a href="updateShowController?showId=${s.showId}"><i class="fa fa-solid fa-pencil"></i></a>
-                                <button class="btn btn-link" type="button" class="btn btn-primary"
-                                        data-bs-toggle="modal" data-bs-target="#exampleModal${s.showId}">
-                                    <i class="fa fa-solid fa-trash"></i>
-                                </button>
-                            </th>
+                <tbody class="useful-table-body">
+                    @foreach (Show item in Model.Items)
+                    {
+                        <tr>
+                            <td>@(ordinalNumber++)</td>
+                            <td>
+                                <a class="link-underline" asp-area="Admin" asp-controller="Show" asp-action="Details" asp-route-showId="@item.ShowId">
+                                    <span>@item.Film.Title</span>
+                                </a>
+                            </td>
+                            <td>@item?.Room?.Name</td>
+                            <td>@item?.ShowDate.ToShortDateString()</td>
+                            <td>@item?.Slot?.Time</td>
                         </tr>
-                        <div class="modal fade" id="exampleModal${s.showId}" tabindex="-1"
-                             aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">
-                                            <i class="bi bi-trash-fill"></i>
-                                            Delete
-                                        </h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Are you sure to delete this product?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <form action="manageShowController" method="Post">
-                                            <input type="search" value="${s.showId}" name="showId" hidden>
-                                            <!-- <input type="search" value="w" name="pid" hidden> -->
-                                            <button type="submit" class="btn btn-primary">Yes</button>
-                                            <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">
-                                                No
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </c:forEach>
+                    }
 
                 </tbody>
             </table>
-            <div class="d-flex justify-content-center">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <c:forEach begin="1" end="${requestScope.total}" step="1" var="i">
-                            <li class="page-item <c:if test=" ${i= =requestScope.page}">
-                                active </c:if> " >
-                                <a class="page-link" href="manageShowController?title=${title}&date=${date}&order=${order}&dimesion=${dimesion}&page=${i}">
-                                    ${i}
-                                </a>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </nav>
-            </div>
         </div>
+        <div class="row d-flex justify-content-center align-content-center mt-3">
+            <div class="col">
+                <span class="fst-italic ">Show <strong>@startIndex - @endIndex</strong> in total of <strong> @totalRecord</strong> shows </span>
+            </div>
+            @if (totalPages > 1)
+            {
+                <ul class="pagination justify-content-end col">
+                    <li class="page-item @((currentPage == 1) ? "disabled" : "")">
+                        <a class="page-link link-paging" href="?currentPage=@(currentPage-1)" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
 
-    </div>
-</section>
+                    @if (currentPage > 3)
+                    {
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    }
+
+                    @for (int pageIndex = startPage; pageIndex <= endPage; pageIndex++)
+                    {
+                        <li class="page-item @(pageIndex == currentPage ? "link-active" : "")">
+                            <a class="page-link link-paging " href="?currentPage=@pageIndex">@pageIndex</a>
+                        </li>
+                    }
+
+                    @if (currentPage < Math.Ceiling(totalRecord / 10.0) - 2)
+                    {
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    }
+
+                    <li class="page-item @((currentPage == totalPages) ? "disabled" : "")">
+                        <a class="page-link link-paging" href="?currentPage=@(currentPage+1)">Next</a>
+                    </li>
+                </ul>
+
+            }
+        </div>
+    }
+    else
+    {
+        <div class="h-100">
+            <h6 class="fw-bold">Shows not found.</h6>
+        </div>
+    }
+
+</div>
+

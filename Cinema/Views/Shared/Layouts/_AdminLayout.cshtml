@@ -1,8 +1,9 @@
 ﻿@{
+    // UserInfo userInfo = SessionHelper.GetObject<UserInfo>(Context.Session, "UserInfo");
+
     var currentController = ViewContext.RouteData.Values["controller"] as string;
     var currentAction = ViewContext.RouteData.Values["action"] as string;
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +12,7 @@
     <title>@ViewData["Title"] - Cinema</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="shortcut icon" href="images/161-1616544_popcorn-icon-cinema-flat-icon-png.png" type="">
+    <link rel="stylesheet" href="~/css/toast.css" asp-append-version="true" />
 
     <title> Cinema Ticket </title>
 
@@ -38,33 +40,78 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 </head>
 <body>
+    <header id="header" class="header fixed-top">
+        <div class="container-fluid d-flex align-items-center justify-content-between">
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-size: 22px;">
-        <a class="navbar-brand" href="adminDashboardController" style="margin-left: 300px;">Admin</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav" style="margin-left: 220px;">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link ms-5" asp-area="Admin" asp-controller="Home" asp-action="Index">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link ms-4" asp-area="Admin" asp-controller="Film" asp-action="Index">Film</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link ms-4" asp-area="Admin" asp-controller="Show" asp-action="Index">Show</a>
-                </li>
-            </ul>
-        </div>
-        <div style="margin-right: 300px;">
-            <a asp-controller="Authen" asp-action="Logout"><i class="fa fa-solid fa-right-from-bracket"></i></a>
-        </div>
-    </nav>
+            <div>
+                <a asp-controller="Home" asp-action="Index" class="logo scrollto me-auto me-lg-0">
+                    <img src="/assets/images/logo.png" />
+                </a>
+            </div>
 
-    <div class="container ">
-        <main role="main" class="pb-3">
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li class="nav-item " title="Sự kiện">
+                        <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="nav-link @(currentController.Contains("Home") ? "active" : "")">
+                           Home
+                        </a>
+                    </li><!-- End Events Nav -->
+
+                    <li class="nav-item " title="Sự kiện">
+                        <a asp-area="Admin" asp-controller="Film" asp-action="Index" class="nav-link @(currentController.Contains("Film") ? "active" : "")">
+                           Film
+                        </a>
+                    </li><!-- End Events Nav -->
+
+                    <li class="nav-item " title="Tin tức">
+                        <a asp-area="Admin" asp-controller="Show" asp-action="Index" class="nav-link @(currentController.Contains("Show")  ? "active" : "")">
+                            Show
+                        </a>
+                    </li><!-- End Events Nav -->
+
+                </ul>
+
+            </nav><!-- navbar -->
+
+
+            <div>
+                <a class="btn btn-primary" href="/SignOut">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Sign Out</span>
+                </a>
+            </div>
+
+        </div>
+        <div class="navbar-mobile" style="display: contents;">
+            <a class="mobile-nav-toggle d-none" href="#" data-bs-toggle="dropdown">
+                <i class="bi bi-list "></i>
+            </a><!-- End Profile Iamge Icon -->
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow ">
+                <li class="nav-item " title="Sự kiện">
+                    <a asp-area="Admin" asp-controller="User" asp-action="Index" class="nav-link @(currentController.Contains("Home") ? "active" : "")">
+                        Home
+                    </a>
+                </li><!-- End Events Nav -->
+
+                <li class="nav-item " title="Sự kiện">
+                    <a asp-area="Admin" asp-controller="District" asp-action="Index" class="nav-link @(currentController.Contains("Film") ? "active" : "")">
+                        Film
+                    </a>
+                </li><!-- End Events Nav -->
+
+                <li class="nav-item " title="Tin tức">
+                    <a asp-area="Admin" asp-controller="Seri" asp-action="Index" class="nav-link @(currentController.Contains("Show")  ? "active" : "")">
+                        Show
+                    </a>
+                </li><!-- End Events Nav -->
+            </ul><!-- End Profile Dropdown Items -->
+
+        </div>
+    </header><!-- End Header -->
+
+
+    <div class="container min-vh-100 pt-5">
+        <main role="main" class="pt-4">
             @RenderBody()
         </main>
     </div>
@@ -85,6 +132,8 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/toast.js" asp-append-version="true"></script>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script src="~/js/jquery-3.4.1.min.js"></script>

@@ -15,6 +15,7 @@
     <title>@ViewData["Title"] - Cinema</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="shortcut icon" href="images/161-1616544_popcorn-icon-cinema-flat-icon-png.png" type="">
+    <link rel="stylesheet" href="~/css/toast.css" asp-append-version="true" />
 
     <title> Cinema Ticket </title>
 
@@ -43,33 +44,34 @@
 
     <header class="header_section">
         <div class="container">
-            <nav class="navbar navbar-expand custom_nav-container ">
+            <nav class="navbar navbar-expand custom_nav-container  d-flex align-items-center justify-content-between">
                 <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-                    <span>
-                        Cinema
-                    </span>
+                    <h4 class="text-white">Welcome, @userInfo.Fullname</h4>
                 </a>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav  mx-auto ">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home </a>
+                    <ul class="navbar-nav ">
+                        <li class="nav-item @(currentController.Contains("Home") ? "active" : "")">
+                            <a class="nav-link " asp-controller="Home" asp-action="Index">Home </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item  @(currentController.Contains("Menu") ? "active" : "")">
                             <a class="nav-link" asp-controller="Menu" asp-action="Index">Menu</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Booking" asp-action="Index">Booking</a>
+                        <li class="nav-item  @(currentController.Contains("Booking") && currentAction == "History" ? "active" : "")">
+                            <a class="nav-link" asp-area="User" asp-controller="Booking" asp-action="History">Booking History</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Profile" asp-action="Index">Profile</a>
+                        <li class="nav-item @(currentController.Contains("Profile") && currentAction == "Profile" ? "active" : "")">
+                            <a class="nav-link " asp-area="User" asp-controller="Profile" asp-action="Index">Profile</a>
+                        </li>
+                        <li class="nav-item @(currentController.Contains("Profile") && currentAction == "ChangePassword" ? "active" : "")">
+                            <a class="nav-link " asp-area="User" asp-controller="Profile" asp-action="ChangePassword">Change Password</a>
                         </li>
                     </ul>
-                    <div class="user_option">
-                        <h5 class="text-white">Welcome, @userInfo.Fullname</h5>
-                        <a asp-area="" asp-controller="Authen" asp-action="Login" class="order_online">
-                            Logout
-                        </a>
-                    </div>
+                </div>
+                <div>
+                    <a class="btn btn-secondary btn-sm text-white" href="/SignOut">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Sign Out</span>
+                    </a>
                 </div>
             </nav>
         </div>
@@ -78,7 +80,7 @@
 
 
     <div>
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3 min-vh-100">
             @RenderBody()
         </main>
     </div>
@@ -163,6 +165,8 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/toast.js" asp-append-version="true"></script>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script src="~/js/jquery-3.4.1.min.js"></script>

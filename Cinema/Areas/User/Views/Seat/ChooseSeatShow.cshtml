@@ -1,0 +1,226 @@
+﻿@using Cinema.Models
+@model List<Seat>
+@{
+    int size = Model.Count;
+    Show? show = ViewData["Show"] as Show;
+
+    int i = 1;
+    int index = 0;
+
+}
+
+<style>
+
+    .movie-container {
+        margin: 20px 0;
+        background-color: #242333;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        font-family: "Lato", sans-serif;
+        margin: 0;
+    }
+
+        .movie-container select {
+            background-color: #fff;
+            border: 0;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-left: 10px;
+            padding: 5px 15px 5px 15px;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+    .container {
+        perspective: 1000px;
+        margin-bottom: 30px;
+    }
+
+    .showcase {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .status {
+        margin-left: 10px;
+        text-align: center;
+        display: flex;
+    }
+
+    .seat .small {
+        margin-top: 20px;
+        font-size: 20px;
+    }
+
+    .seat {
+        background-color: #444451;
+        height: 26px;
+        width: 32px;
+        margin: 3px;
+        font-size: 50px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+        .seat.selected {
+            background-color: green;
+        }
+
+        .seat.sold {
+            background-color: #fff;
+        }
+
+        .seat:not(.sold):hover {
+            cursor: pointer;
+            transform: scale(1.2);
+        }
+
+    .showcase .seat:not(.sold):hover {
+        cursor: default;
+        transform: scale(1);
+    }
+
+
+    .row {
+        display: flex;
+    }
+
+    .screen {
+        background-color: #fff;
+        height: 120px;
+        width: 100%;
+        margin: 15px 0;
+        transform: rotateX(-48deg);
+        box-shadow: 0 3px 10px rgba(255, 255, 255, 0.7);
+    }
+
+    p.text {
+        margin: 5px 0;
+    }
+
+        p.text span {
+            color: rgb(158, 248, 158);
+        }
+
+</style>
+
+<section class="about_section layout_padding">
+    <div class="container  ">
+        <div class="row">
+            <div class="col-md-12 movie-container">
+                <h4 class="text-center" style="margin-top: -150px; margin-bottom: 100px;">
+                    Film: @show.Film.Title <br />
+                    Slot: @show.Slot.Time <br />
+                    Time: @show.Film.Time minutes.
+                </h4>
+                <div class="showcase">
+                    <div class="status">
+                        <div class="seat"></div>
+                        <small>Available</small>
+                    </div>
+                    <div class="status">
+                        <div class="seat sold"></div>
+                        <small>Sold</small>
+                    </div>
+                    <div class="status">
+                        <div class="seat selected"></div>
+                        <small>Selected</small>
+                    </div>
+                </div>
+                <div class="containers">
+                    <div class="screen"></div>
+                    @if (size == 0)
+                    {   @for (int outside = 1; outside <= 6; outside++)
+                        {
+                            <div class="row">
+                                @for (int inside = 1; inside <= 8; inside++)
+                                {
+                                    <div class="seat" onclick="choose(this)" id="@(i++)"></div>
+                                }
+                            </div>
+                        }
+
+                    }
+                    else
+                    {
+                        @for (int outside = 1; outside <= 6; outside++)
+                        {
+                            <div class="row">
+                                @for (int inside = 1; inside <= 8; inside++)
+                                {
+                                    @if (i == Model.ElementAt(index).SeatId)
+                                    {
+                                        <div class="seat sold" id="@(i++)"></div>
+
+                                        @if (index < size - 1)
+                                        {
+                                            index++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="seat" onclick="choose(this)" id="@(i++)"></div>
+                                    }
+                                }
+                            </div>
+                        }
+
+                    }
+
+                </div>
+
+                <form asp-area="User" asp-controller="Booking" asp-action="BookSeats" method="post" id="formBooking">
+                    <input type="hidden" id="seatStr" name="seatStr" />
+                    <input type="hidden" value="@show.ShowId" name="showId">
+                </form>
+                <button class=" mt-5 btn btn-primary" type="button" onclick="submit()">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const arr = [];
+
+    function choose(a) {
+        console.log(a.id);
+        const f = arr.findIndex((e) => e == a.id);
+        // console.log(f);
+        if (f == -1) {
+            document.getElementById(a.id).style.backgroundColor = "green";
+            arr.push(a.id)
+            // console.log(arr)
+        } else {
+            document.getElementById(a.id).style.backgroundColor = "#444451";
+            arr.splice(f, f + 1);
+            // console.log(arr);
+        }
+    }
+
+    function submit() {
+     let seatStr = "";
+    for (var i = 0; i < arr.length; i++)
+    {
+        if (i != arr.length - 1)
+        {
+            seatStr += arr[i] + ",";
+        }
+        else
+        {
+            seatStr += arr[i];
+        }
+    }
+
+        console.log("seatStr: " + seatStr);
+        document.getElementById("seatStr").value = seatStr;
+        var form = document.getElementById("formBooking");
+        form.submit();
+    }
+</script>

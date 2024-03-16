@@ -1,6 +1,7 @@
 ﻿using Cinema.Models;
 using Cinema.Requests;
 using Cinema.Responses;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cinema.Services.Films
@@ -49,7 +50,7 @@ namespace Cinema.Services.Films
         {
             try
             {
-                var query = await _context.Films.ToListAsync();
+                var query = await _context.Films.Include(x => x.Genre).ToListAsync();
                 if (request.GenreId != 0)
                 {
                     query = query.Where(x => x.GenreId == request.GenreId).ToList();
@@ -60,7 +61,9 @@ namespace Cinema.Services.Films
                 request.TotalPages = (int)Math.Ceiling(request.TotalRecord / (double)request.PageSize);
                 query = query.Skip((request.CurrentPage - 1) * request.PageSize).Take(request.PageSize).ToList();
 
-                request.Items = query.ToList();
+                request.Items = query
+                    .OrderByDescending(x => x.FilmId)
+                    .ToList();
             }
             catch (Exception ex)
             {
@@ -73,7 +76,7 @@ namespace Cinema.Services.Films
         {
             try
             {
-                var film = await _context.Films.SingleOrDefaultAsync(x => x.FilmId == id);
+                var film = await _context.Films.Include(x => x.Genre).SingleOrDefaultAsync(x => x.FilmId == id);
 
                 return film;
             }
@@ -126,6 +129,15 @@ namespace Cinema.Services.Films
                 var existed = await _context.Films.SingleOrDefaultAsync(x => x.FilmId == film.FilmId);
                 if (existed != null)
                 {
+                    existed.GenreId = film.GenreId;
+                    existed.Actor = film.Actor;
+                    existed.Description = film.Description;
+                    existed.Time = film.Time;
+                    existed.Premiere = film.Premiere;
+                    existed.CountryCode = film.CountryCode;
+                    existed.Img = film.Img;
+                    existed.ImagesSlide = film.ImagesSlide;
+                    existed.Title = film.Title;
                     _context.Update(existed);
                     if (await _context.SaveChangesAsync() > 0)
                     {

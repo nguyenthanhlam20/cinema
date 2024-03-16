@@ -7,5 +7,6 @@ namespace Cinema.Services.Users
         Task<int> GetTotalUsers();
         Task<User> GetUserByEmail(string email);
         Task<bool> UpdateUser(User user);
+        Task<bool> ChangePassword(string email, string newPassword);
     }
 }

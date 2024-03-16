@@ -1,61 +1,62 @@
-﻿<div class="container rounded bg-white mt-5 mb-5">
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-6 border">
-            <form action="createShowController" method="post">
-                <div class="p-3 py-5">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="text-right">Add Show</h4>
-                    </div>
-                    <div class="row mt-3">
-                        <c:if test="${requestScope.mess != null}">
-                            <div class="alert alert-danger" role="alert">
-                                ${requestScope.mess.mess}
-                            </div>
-                        </c:if>
+﻿@using Cinema.Models
+@model Show
 
-                        <div class="col-md-12">
-                            <label class="labels">Film</label>
-                            <select name="film" class="form-control">
-                                <c:forEach items="${requestScope.films}" var="f">
-                                    <option value="${f.filmId}">
-                                        ${f.title}
-                                    </option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <div class="col-md-12">
-                            <label class="labels">Date</label>
-                            <input type="date" required class="form-control"
-                                   placeholder="premiere" value="" name="date">
-                        </div>
-                        <div class="col-md-12">
-                            <label class="labels">Time</label>
-                            <select name="slot" class="form-control">
-                                <c:forEach items="${requestScope.slots}" var="s">
-                                    <option value="${s.id}">
-                                        ${s.time}
-                                    </option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <div class="col-md-12">
-                            <label class="labels">Theater</label>
-                            <select name="room" class="form-control">
-                                <c:forEach items="${requestScope.rooms}" var="r">
-                                    <option value="${r.roomId}">
-                                        ${r.roomName}
-                                    </option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="mt-5 text-center">
-                        <button class="btn btn-primary profile-button" type="submit">Add Show</button>
-                    </div>
-                </div>
-            </form>
+@{
+    var films = ViewData["Films"] as List<Film>;
+    var slots = ViewData["Slots"] as List<Slot>;
+    var rooms = ViewData["Rooms"] as List<Room>;
+}
+<div class="pagetitle">
+    <h1>Add New Show</h1>
+</div><!-- End Page Title -->
 
+<div class="container rounded bg-white card border-0 p-3">
+    <form asp-area="Admin" asp-controller="Show" asp-action="Create" method="post">
+        <div class="row">
+            <div class="col-md-12">
+                <label class="mb-1">Choose film</label>
+                <select asp-for="FilmId" class="form-control">
+                    @if (films != null)
+                    {
+                        @foreach (var item in films)
+                        {
+                            <option value="@item.FilmId">@item.Title</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-12 mt-3">
+                <label class="mb-1">Choose date</label>
+                <input asp-for="ShowDate" type="date" required class="form-control"
+                       placeholder="premiere" value="">
+            </div>
+            <div class="col-md-12 mt-3">
+                <label class="mb-1">Choose slot</label>
+                <select asp-for="SlotId" class="form-control">
+                    @if (slots != null)
+                    {
+                        @foreach (var item in slots)
+                        {
+                            <option value="@item.SlotId">@item.Time</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-12 mt-3">
+                <label class="mb-1">Choose theater</label>
+                <select asp-for="RoomId" class="form-control">
+                    @if (rooms != null)
+                    {
+                        @foreach (var item in rooms)
+                        {
+                            <option value="@item.RoomId">@item.Name</option>
+                        }
+                    }
+                </select>
+            </div>
         </div>
-
-    </div>
+        <div class="mt-3">
+            <button class="btn btn-primary  w-100" type="submit">Save</button>
+        </div>
+    </form>
 </div>

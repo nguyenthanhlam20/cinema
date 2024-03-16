@@ -10,7 +10,7 @@ namespace Cinema.Services.Shows
         Task<bool> UpdateShow(Show show);
         Task<bool> RemoveShow(int showId);
         Task<Show> GetShowBySlotAndDate(int slot, DateTime date);
-        Task<Show> GetShowByFilmAndDate(int filmId, DateTime date);
+        Task<List<Show>> GetShowByFilmAndDate(int filmId, DateTime date);
         Task<Show> GetShowById(int showId);
         Task<ShowPagingRequest> GetShows(ShowPagingRequest request);
     }

@@ -21,7 +21,7 @@
     <h1>List Film</h1>
 </div><!-- End Page Title -->
 
-<div class="card h-100 border-0">
+<div class="card h-100 border-0 p-3">
 
     <div class="row mb-2">
         <form id="form-search" method="get" asp-area="Admin" asp-controller="Film" asp-action="Index">
@@ -32,14 +32,14 @@
                         <input asp-for="@Model.SearchTerm" name="SearchTerm" type="text" class="form-control rounded-0 rounded-start"
                         id="search-term"
                                placeholder="Enter item name">
-                        <button type="submit" class="btn btn-info rounded-0 rounded-end">
+                        <button type="submit" class="btn btn-info rounded-0 rounded-end text-white">
                             <span><i class="bi bi-search"></i> Search</span>
                         </button>
                     </div>
                 </div>
                 <div class="col-sm-12 col-lg-4 pt-2 pt-lg-0 text-lg-end">
-                    <a asp-area="Admin" asp-controller="Subject" asp-action="Create" class="btn btn-primary">
-                        <span><i class="bi bi-plus-circle-fill me-1"></i>Create new item</span>
+                    <a asp-area="Admin" asp-controller="Film" asp-action="Create" class="btn btn-primary">
+                        <span><i class="bi bi-plus-circle-fill me-1"></i>Add New Film</span>
                     </a>
                 </div>
             </div>
@@ -73,7 +73,7 @@
 
                             <td>@item.Premiere </td>
                             <td>@item.Author</td>
-                            <td>@item.Genre</td>
+                            <td>@item?.Genre.Name</td>
                             <td>@item.CountryCode</td>
                         </tr>
                     }
@@ -83,7 +83,7 @@
         </div>
         <div class="row d-flex justify-content-center align-content-center mt-3">
             <div class="col">
-                <span class="fst-italic ">Show <strong>@startIndex - @endIndex</strong> in total of <strong> @totalRecord</strong> subjects </span>
+                <span class="fst-italic ">Show <strong>@startIndex - @endIndex</strong> in total of <strong> @totalRecord</strong> films </span>
             </div>
             @if (totalPages > 1)
             {
@@ -120,7 +120,7 @@
     else
     {
         <div class="h-100">
-            <h6 class="fw-bold">Subjects not found.</h6>
+            <h6 class="fw-bold">Films not found.</h6>
         </div>
     }
 

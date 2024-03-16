@@ -39,7 +39,7 @@ namespace Cinema.Models
         {
             modelBuilder.Entity<Booking>(entity =>
             {
-                entity.ToTable("booking");
+                entity.ToTable("Booking");
 
                 entity.Property(e => e.BookingId).HasColumnName("bookingId");
 
@@ -67,9 +67,9 @@ namespace Cinema.Models
                         r => r.HasOne<Booking>().WithMany().HasForeignKey("BookingId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_booking_detail_booking"),
                         j =>
                         {
-                            j.HasKey("BookingId", "SeatId");
+                            j.HasKey("BookingId", "SeatId").HasName("PK_booking_detail");
 
-                            j.ToTable("booking_detail");
+                            j.ToTable("BookingDetails");
 
                             j.IndexerProperty<int>("BookingId").HasColumnName("bookingId");
 

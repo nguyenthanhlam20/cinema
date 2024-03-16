@@ -54,7 +54,7 @@ namespace Cinema.Controllers
                     claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
 
-                UserInfo userInfo = new UserInfo() { Fullname = user.Fullname ?? "", Email = user.Email, Role = user.Role ?? 1 };
+                UserInfo userInfo = new UserInfo() { UserId = user.UserId, Fullname = user.Fullname ?? "", Email = user.Email, Role = user.Role ?? 1 };
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity));
@@ -111,6 +111,25 @@ namespace Cinema.Controllers
                 ToastHelper.ShowError(TempData, ex.Message);
                 return View(request);
             }
+        }
+
+        [HttpGet]
+        [Route("/SignOut")]
+        public async Task<IActionResult> SignOut()
+        {
+            try
+            {
+                SessionHelper.Remove(HttpContext.Session, "UserInfo");
+                SessionHelper.Remove(HttpContext.Session, "AccessToken");
+
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            }
+            catch (Exception ex)
+            {
+                ToastHelper.ShowError(TempData, ex.Message);
+            }
+            return RedirectToAction("Index", "Home"); // Redirect to the home page
         }
     }
 }

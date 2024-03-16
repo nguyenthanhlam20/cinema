@@ -1,0 +1,45 @@
+﻿@using Cinema.Models
+@using Cinema.Responses
+@model List<Booking>
+@{
+    int index = 1;
+}
+<div class="container mt-3">
+    <div class="pagetitle">
+        <h1>Booking History</h1>
+    </div><!-- End Page Title -->
+    <section >
+        @if (Model != null)
+        {
+               <div class="table-container">
+                <table class="useful-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Index</th>
+                            <th scope="col">Film Title</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Slot</th>
+                            <th scope="col">Seat</th>
+                        </tr>
+                    </thead>
+                    <tbody class="useful-table-body">
+                        @foreach (var item in Model)
+                        {
+                            <tr style="height: 60px">
+                                <td scope="row">@(index++)</td>
+                                <td scope="row">@item.Show.Film.Title</td>
+                                <td scope="row">@item.Show.ShowDate.ToShortDateString()</td>
+                                <td scope="row">@item.Show.Slot.Time</td>
+                                <td scope="row">@string.Join(", ", item.Seats.Select(s => s.SeatName))</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <h6>You haven't booked any shows.</h6>
+        }
+    </section>
+</div>
