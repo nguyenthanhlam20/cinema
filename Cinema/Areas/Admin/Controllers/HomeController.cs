@@ -32,22 +32,27 @@ namespace Cinema.Areas.Admin.Controllers
         {
             try
             {
+                // Attempt to retrieve data including films, shows, total users, and total booking revenues asynchronously
                 var films = await _filmService.GetFilms();
                 var shows = await _showService.GetShows();
                 var users = await _userService.GetTotalUsers();
                 var revenues = await _bookingService.GetTotalBooking();
 
+                // Set ViewData with the obtained data
                 ViewData["totalMovie"] = films.Count;
                 ViewData["totalUser"] = users;
-                ViewData["totalShow"] = films.Count;
+                ViewData["totalShow"] = shows.Count;
                 ViewData["totalRevenue"] = revenues;
-
             }
             catch (Exception ex)
             {
+                // If an exception occurs while retrieving data, it is caught here
+                // Error handling could be implemented if needed
             }
 
+            // Return the view
             return View();
+
         }
     }
 }

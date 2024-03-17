@@ -24,10 +24,15 @@ namespace Cinema.Areas.User.Controllers
         {
             try
             {
+                // Retrieve all genres asynchronously and set them in ViewData
                 ViewData["Genres"] = await _genreService.GetAll();
 
+                // Retrieve films based on the provided request condition asynchronously
                 var response = await _filmService.GetFilmByCondition(request);
+
+                // Return the view with the films response for display
                 return View(response);
+
             }
             catch (Exception ex)
             {
